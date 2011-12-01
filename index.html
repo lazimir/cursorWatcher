@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Наблюдатель за курсором</title>
+    <style type="text/css">
+        body {
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAACgCAMAAACsXRuGAAAADFBMVEWIiIjd3d3y8vLm5uZzdc63AAAAbklEQVR42u3ZIQ4AIAwDwI39/8/wAlTFxFUgm5ALmFZV51Iv52Vyx/7CzhdONr3/ylCgQIECBQoUKFCgQIECBQoUKFCgQIECBcrmccGe4qX4vqBAgQIFChQoUKBAgQIFChQoUKBAgQIFij3lX3gBXBBzc8FaGvIAAAAASUVORK5CYII=");
+        }
+
+        .cursor {
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsSAAALEgHS3X78AAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAABfUlEQVR42mL4//8/AzKOjY39z8DAwA3ErOhy6BgGsMkBBBATAxYANPwLkBJnZGRkZSATAAQQVoMXLVoEMvwxJYYDBBATLglKDQcIICZ8kpQYDhBATIQUkGs4QAAxEaOIHMMBAoiJWBeQajhAADGREm6kGA4QQEykxjay4aBMhEsdQACxEGtgXFwceiZ6vHjxYlkg8yUQ/0ZXDxBALIQMA7kQBoAGhQCpr1CDfkGzPhs2gwECiAFbWQEC0DIjGMZHEjMCYhkgFgNiAVxlCkAAseByKdR1r7BIg8L1C1DzB2AE4vQtQAAx4CjdbKEY7DIsrlZEjjhsLgYIIAwXA10qCI3xr9CIwQZAwfAeiD/gcjBAAGErY1nRy2NQWOJzNTYXAwQQExaLfgPxVxCNJPwVh6u5cTkYIICISscgS4ARJQj1PgzwQJMaVgAQQIzIVQxYAHdMs0LDXhpqKMiSe6BwRjcDBAACiBSDkcOfDZpBwJkFm8EAAcSITZAaACDAAGEiJMT0Q2k9AAAAAElFTkSuQmCC");
+            position: absolute;
+            z-index: 10000;
+            top: -22px;
+            left: -22px;
+            width: 22px;
+            height: 22px;
+        }
+    </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="cursorWatcher.js"></script>
+    <script type="text/javascript">
+        cursorWatcher = new CursorWatcher({
+            minStayTime: 30,
+            sendInterval: 300,
+            dataUrl: '1px.gif?data='
+        });
+
+        $(function() {
+            $("#startRecording").click(function() {
+                this.style.display = 'none';
+                $("#stopRecording").css("display", "inline");
+                $("#startPlayback").css("display", "none");
+                cursorWatcher.start();
+            });
+
+            $("#stopRecording").click(function() {
+                this.style.display = 'none';
+                $("#startRecording").css("display", "inline");
+                $("#startPlayback").css("display", "inline");
+                cursorWatcher.stop();
+            });
+
+            $("#startPlayback").click(function() {
+                this.style.display = 'none';
+                $("#startPlayback").css("display", "none");
+                cursorWatcher.repeatMovements('cursor');
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="cursor" class="cursor"></div>
+<div style="position: fixed; top: 7px; left: 7px;">
+    <input id="startRecording" type="button" style="width: 150px;" value="Записать движение">
+    <input id="stopRecording" type="button" style="width: 150px; display: none;" value="Остановить запись">
+    <input id="startPlayback" type="button" style="display: none;" value="Воспроизвести движение">
+</div>
+</body>
+</html>
